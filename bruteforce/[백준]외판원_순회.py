@@ -12,11 +12,7 @@ def solution(num_min, v, depth, val):
     return num_min
 N = int(input())
 
-adj_list = [[] for _ in range(N)]
-for i in range(N):
-    num = list(map(int, input().split()))
-    for j in num:
-        adj_list[i].append(j)
+adj_list = [list(map(int, input().split())) for _ in range(N)]
 
 visited = [0]*N
 
