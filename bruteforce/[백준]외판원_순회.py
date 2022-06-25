@@ -14,7 +14,5 @@ N = int(input())
 
 adj_list = [list(map(int, input().split())) for _ in range(N)]
 
-visited = [0]*N
-
-visited[0] = 1
+visited = [1] + [0] * (N-1)
 print(solution(10**9, 0, 0, 0))
