@@ -53,5 +53,3 @@ def solution(p):
         return u
     else:
         return makeCorrectBracket(u, v)
-        
-    return u+v
