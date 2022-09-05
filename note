@@ -1,1 +1,288 @@
 
+### 레드블랙트리를 사용하는 이유
+
+BST에서 search, insert, delete는 모두 시간복잡도가 트리의 높이에 비례하는데, 최악의 경우 노드의 개수가 n개일 때, $O(n)$이 될 수 있다. 만약, 랜덤하게 데이터가 들어온다면 $O(logN)$의 성능을 가질 수 있다.
+
+레드블랙트리는 이러한 BST의 종류 중 하나이며, search, insert, delete 연산을 최악의 경우에도  $O(logN)$시간이 되도록 조정한다.
+
+### 레드블랙트리의 특징 및 조건
+
+- 각 노드는 하나의 key, 왼쪽자식 left, 오른쪽 자식 right, 부모노드 p의 주소를 저장한다.
+- 자식노드가 존재하지 않을 경우, NIL 노드라고 부르는 특수한 노드를 가지고 있다고 가정한다.
+- 따라서 모든 리프노드는 NIL노드이며, 루트의 부모도 NIL노드라고 가정한다.
+- 노드들은 내부노드와 NIL노드로 분류한다
+- 노드 x의 높이 h(x)는 자신으로부터 리프노드까지의 가장 긴 경로에 포함된 에지의 개수이다.
+- 노드 x의 블랙-높이 bh(x)는 x로부터 리프노드까지의 경로상의 블랙노드의 개수이다. (노드 X 자신은 포함을 하지 않는다.)
+
+1. 각 노드는 red 혹은 black 이다.
+2. 루트노드는 black이다.
+3. 모든 리프노드(NIL 노드)는 black이다.
+4. red노드의 자식노드들은 전부 black이다.(red노드는 연속되어 등장하지 않는다.)
+5. 모든 노드에 대해서 그 노드로부터 자손인 리프노드에 이르는 모든 경로에는 동일한 개수의 black노드가 존재한다.
+
+### Left and Right Rotation
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec657442-d97c-46d9-9e75-28b06ecc8c6c/Untitled.png)
+
+INSERT와 DELETE가 공통적으로 필요한 두 가지 기본연산은 좌,우 회전이다. 해당 연산은 한 노드를 중심으로 부분적으로 노드의 모양을 수정하는 연산이다. 특정노드에 대해서 로테이션해도 BST의 특성을 유지한다. 이는 x노드와 y노드의 좌회전을 한 후의 서브트리를 살펴보면 유지한다는 것을 알 수 있다. 
+
+알파 서브트리는 x의 왼쪽 서브트리이고 변환 후, 여전히 x의 왼쪽 서브트리이다. 감마 서브트리는 y의 오른쪽 서브트리이고, 변환 후, 여전히 y의 오른쪽 서브트리이다. 베타 서브트리만 y의 왼쪽 서브트리였는데, 변환 후 x의 오른쪽 서브트리로 변경되었다. 원래 베타는 y보다는 작고 x 보다는 컸으며, 변환 후에도 y의 왼쪽서브트리, x의 오른쪽 서브트리이므로 BST를 유지하고 있다.
+
+### Left Rotation 의사코드
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/73f216a7-99ba-4db1-9405-ecd242072f0b/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/96094ebe-8bb0-47de-bb96-f147972e4819/Untitled.png)
+
+**y→left ≠ T→nil 일때만 y→left→parent = x; 로 변경해야한다!**
+
+인자 $T$는 레드블랙트리를 가리키며, x는 회전할 노드를 가리킨다.
+
+2 : x의 오른쪽 자식을 y의 왼쪽자식으로 가리킨다.
+
+3 : y의 왼쪽 자식(B)의 부모(p)는 x를 가리킨다.
+
+4 : y의 부모노드는 x의 부모노드를 가리킨다.
+
+5 : 만약 x가 루트노드라면
+
+6 : y가 T(레드블랙트리)의 루트노드가 된다.
+
+7 : x가 루트가 아니라 x 부모노드의 왼쪽 자식이라면
+
+8 : x 부모노드의 왼쪽자식은 y를 가리킨다.
+
+9 : x가 부모노드의 오른쪽 자식이라면 x 부모노드의 오른쪽 자식은 y를 가리킨다.
+
+10 : y의 왼쪽 자식은 x를 가리킨다.
+
+11 : x의 부모노드는 y를 가리킨다.
+
+### Insert
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b685fa31-9f25-4aa1-97eb-8fce4b74e2d3/Untitled.png)
+
+1, 2 : y는 nil, x는 root노드로 지정
+
+3 : x가 nil값이 될 때까지
+
+4 : y는 x노드의 한 칸위를 가리키므로 z의 부모노드이다.
+
+5~7 : z의 키값과 x의 키값을 비교해서 z의 키값이 작다면, x의 왼쪽 노드로 이동하고, z의 키값이 더 크다면, x의 오른쪽 노드로 이동한다.
+
+8 : z의 부모노드는 y를 가리키도록 한다.
+
+9 : y가 nil노드라면 (z가 루트노드라면)
+
+10 : T의 루트노드는 z노드를 가리킨다.
+
+11 : (y가 nil노드가 아니고) z의 키값이 y의 키값보다 작다면
+
+12~13 : y의 왼쪽노드는 z를 가리키며, z의 키값이 y의 키값보다 크다면 y의 오른쪽 노드가 z를 가리킨다.
+
+14~16 : z의 왼쪽자식과 오른쪽 자식은 nil을 가리키며, new node이므로 색깔은 red이다.
+
+17 :  RB-수정함수 호출
+
+### 16라인까지 진행했을 때 위반될 가능성이 있는 조건들
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/563a66f0-0a7e-4e7c-b8e9-d50a5c5da8aa/Untitled.png)
+
+1. 모든 노드는 red or black이므로 문제가 없다. OK
+2. 보통의 조건이라면 위반되지는 않지만, 만약 루트노드가 red 이더라도, 루트노드를 black으로 변경하면 된다. black을 red 로 변경하는 것은 위험하지만(red-red violation), red를 black으로 변경하는 것은 다소 자유롭다. 5번 룰 또한 루트노드(카운트 및 거쳐가는 노드가 없음)이기에 변경되지 않는다.
+3. 모든 리프노드들은 black이기에 OK
+4. **red가 연속해서는 안되기에 위반될 가능성이 높다!**
+5. red가 추가되었기에 black 노드 개수는 변함없다. OK
+
+### INSERT red(z) - red(p[z]) 해결
+
+ Loop Invariamt :
+
+z 는 red노드
+
+다음 중 하나의 위반이 존재:
+
+조건 2 : z가 루트노드이면서 red 이다.
+
+조건 4 : z와 그 부모 p[z]가 둘 다 red이다.
+
+종료조건 :
+
+부모노드 p[z]가 black이 되면 종료한다. 조건 2가 위반일 경우 z를 블랙으로 바꿔주고 종료한다.
+
+### case 1 : z의 삼촌이 red인 경우
+
+크게 case는 6개로 나뉘어지게 되는데, case 1,2,3 은 z의 조상 노드(p[p[z]])의 왼쪽자식일 때이며, 4,5,6은 조상 노드의 오른쪽 자식일 경우이므로 대칭된다. 여기서는 case 1,2,3 만 다룬다.
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c1084b23-f370-4d3a-9f73-0019a56f3cb1/Untitled.png)
+
+줄여말하면, 나(z)와 내 부모(p[z])가 red이며 부모의 형제노드(삼촌노드)도 red인 상황이다. 이 상황에서는 조상 노드가 black 노드일 수 밖에 없다. 이 경우에는 부모와 삼촌노드의 색을 black으로 변경하고, 조상의 노드를 red로 변경한다. 
+
+bh(x) ( x로부터 리프노드까지의 경로상의 블랙노드의 개수 ) 부분에서도 black 높이는 변경되지 않는다. 원래 C노드를 통과할 때, B혹은 D노드를 갈라져서 통과하므로 black 높이는 변경되지 않는 것을 알 수 있다.
+
+조상의 조상의 관계가 새로운 red-red인 경우에서 문제가 생길 수 있다. ( 새로운 문제를 해결하러 z가 두 칸 위로 올라간다 )
+
+### case 2, 3 : z의 삼촌이 black
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fd57792e-de21-4dd5-8a8b-4ba2f59915bd/Untitled.png)
+
+y노드 (삼촌노드)를 저렇게 표현한 이유는 색이 black이기 때문에 NIL노드일 수 있어서 애매하게 표현해놓은 것이다.
+
+z와 p[z] 는 red이며, 삼촌노드가 black인 것은 동일한데, case 2는 z가 p[z]의 오른쪽 자식인경우, case 3는 z가 p[z]의 왼쪽 자식일 경우이다.
+
+case 2 의 해결방법은 p[z]에 대해서 left-rotation하여 case 3로 변경한다. 이 경우에는 원래 p[z]였던것이 z가 된다.
+
+case 3가 되었으면, p[z]를 black으로 변경하고, p[p[z]]를 red로 변경한다. p[p[z]]에 대해서 right-rotation을 수행한다.
+
+red-red 문제는 완전히 해결되었으며, bh(x) 문제도 없다.
+
+즉, case 1을 해결하고나면 case 1으로 다시 갈수도 있고, (case2)→case3로 해결될 수 있다. case1으로 계속 올라가게 되면 루트노드를 만나고, 루트노드를 black으로 변경한 후 해결된다.
+
+**case 1 → 1,2,3,4,5,6**
+
+**case 2 → case 3**
+
+**case 3 → 해결**
+
+**case 4 → 1,2,3,4,5,6,**
+
+**case 5 → case 6**
+
+**case 6 → 해결**
+
+### INSERT red(p[z]) - red(p[p[z]]) 해결 의사코드
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/22c7a614-3957-4cc8-b26a-093624a49996/Untitled.png)
+
+여기서 y는 z의 삼촌노드이다.
+
+1 : 부모노드의 색깔이 red일 경우 반복한다. 루트노드까지 가면 p[z]는 NIL을 가리키므로 while문에서 빠져나온다.
+
+2,3 : 부모노드가 조상노드의 왼쪽 자식이라면, ( case 1,2,3 )  삼촌노드는 조상노드의 오른쪽 자식
+
+4 : 삼촌노드의 색도 RED 인가?
+
+5~8 (case1) : 맞다면, 부모노드, 삼촌노드의 색을 black으로 변경하고 조상노드의 색을 red로 변경한다. 조상노드에서 red-red violation이 발생할 수 있으므로, z 노드를 현재 조상노드로 변경한다.
+
+9 : (case2,3) 삼촌노드의 색이 BLACK일 때, z노드가 부모의 오른쪽 자식인가?
+
+10,11 : z 가 부모의 오른쪽 자식이라면, z노드를 z의 부모노드로 변경하고, LEFT-ROTATE를 수행한다.
+
+12~14 : z의 부모노드를 black으로 변경하고, z의 조상노드를 red로 변경한 후, z의 조상노드를 기준으로 RIGHT-ROTATE를 수행한다.
+
+15 : case 1,2,3은 z가 p[p[z]]의 왼쪽 자식일 경우이며 15라인에 else는 z가 p[p[z]] 의 오른쪽 자식일 경우인 case 4,5,6 을 다룬 것으로 case 1,2,3 가 대칭되도록 짜면 된다.
+
+16 : 트리의 루트가 red인 상황을 대비해서, 루트의 색을 black으로 변경한다. (루트는 어짜피 black이므로 한 번더 수행한다고 문제될 것은 없다.) 
+
+### Delete
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f6f7d5e7-9a32-4b55-bfbd-9ae3f045228a/Untitled.png)
+
+원래 함수로는 삭제될 노드(z)가 주어지지 않고, 키값이 주어질 것이다. find를 통해 노드를 찾으면 됨.
+
+1 : z의 왼쪽이나 오른쪽 자식 중 하나가 NIL인가?
+
+2 : 맞다면, z를 y에 복사한다.
+
+3 : 아니라면 z의 Successor 노드(z의 오른쪽 노드중에 가장 작은 노드)를 y에 복사한다.
+
+— 실제로 삭제할 노드(y)를 찾음  —-
+
+4 : y의 왼쪽 자식이 NIL이 아닌가? (x는 y가 자식노드가 있을 경우 자식노드이며, 없었을 경우에는  NIL노드이다.)
+
+5 : NIL이 아니라면, x는 y의 왼쪽 자식이다.
+
+6 : NIL이 맞다면, x는 y의 오른쪽 자식이다.
+
+7 : x의 부모는 y의 부모를 가리킨다.
+
+8 : y의 부모노드가 루트인가?
+
+9 : 맞다면, 루트노드는 x를 가리킨다.
+
+10~12 : 아니라면, y가 y 부모노드의 왼쪽(오른쪽) 자식이라면, y 부모노드의 왼쪽(오른쪽) 자식은 x를 가리킨다.
+
+13 : 만약 삭제하려는 노드가 실제 노드와 다르다면 (삭제하려는 노드가 successor라면)
+
+14,15 : y에 저장된 데이터들을 모두 노드 z로 옮긴다. (데이터들을 옮겨야함. 얕은 복사가 아님.)
+
+만약 실제로 삭제된 노드 y가 red였으면 종료한다. 레드블랙트리에서 red가 사라지는건 이진트리를 유지할 수 있음.
+
+16 : 삭제된 노드가 BLACK이라면, RB-DELETE-FIXUP(T, x)을 실행한다. (x는 실제로 삭제한 노드의 자식노드) 
+
+여기서 x 가 RED노드 라면, BLACK으로 변경하면된다. 문제가 되는 것은 x도 BLACK노드일 때이다.
+
+18 : y를 리턴한다.
+
+### DELETE-FIXUP
+
+1. OK.
+2. Y가 루트였고 x가 RED인 경우 → x를 BLACK으로 변경
+3. OK.
+4. p[y]와 x가 모두 red일 경우 red-red 위반 → x를 BLACK으로 변경
+5. 원래 y를 포함했던 모든 경로는 이제 black 노드가 하나 부족해진다.
+    
+    1) 노드 x 에 ‘extra black’을 부여(BLACK 두개부여)해서 일단 조건 5를 만족시킨다. 
+    
+    2) 노드 x는 ‘double black’ 혹은 ‘red & black’ → red&black 이면 해당 노드의 red를 뻇고 종료
+    
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2b9e485e-bfbe-4c7d-8eb7-c0e0d861fc87/Untitled.png)
+
+최악의 경우 x 가 루트까지 올라가서 extra black을 제거하는 경우이다.
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/03a8e685-da98-4d31-b886-33743a585a5b/Untitled.png)
+
+case 1,2,3,4 는 모두 x가 p[x]의 왼쪽자식일 때이다. 
+
+### case 1 : 형제노드가 RED인 경우
+
+현재노드가 NIL이면서 double-black 일 수도 있다는 것을 인지해야한다. 또한, 형제노드의 자식노드들은 무조건 NIL noe가 될 수 없다. 현재노드가 double-black인데, 형제노드를 지나는 노드의 자식노드가 NIL이라면(하나만 지나므로) 조건 5에 위배된다.
+
+형제노드를 black으로 p[x]를 red로 변경 후, p[x]에 대해서 LEFT-ROTATION을 수행한다.
+
+이렇게 되면 원래 형제노드의 자식노드였던 것이 현재 노드의 새로운 형제노드가 된다. 현재 노드는 여전히 double-black 노드이다.
+
+### case 2 : 형제노드는 BLACK, 형제노드의 자식노드들도 BLACK
+
+현재노드, 형제노드, 자식노드들도 모두 BLACK이기에 부모노드는 BLACK일 수도 RED일 수도 있다. 
+
+x의 extra-black과 형제노드의 BLACK을 뺏고, 형제노드를 RED로 바꾼다. p[x]를 새로운 x로 변경 후 계속 진행한다.
+
+만약 new x 가 red일경우 red & black 이 되어서 red를 뺏고 그대로 종료할 수 있다. 만약 new x도 black 노드일 경우, 이 노드가 새로운 double-black 노드가 되고 반복된다. (만약 case 1 에서 case 2 )
+
+### case 3 : 형제노드는 BALCK, 형제노드의 왼쪽자식이 RED
+
+형제노드를 RED로 형제노드의 왼쪽자식을 BLACK으로 변경한다. 형제노드에 대해서 RIGHT-ROTATION을 수행하고, case 4 로 넘어간다.
+
+### case 4 : 형제노드는 BLACK, 형제노드의 오른쪽자식이 RED
+
+형제노드와 부모노드의 색을 바꾼다. 형제노드의 오른쪽자식을 black으로 바꾸고, p[x]에 대해서 LEFT-ROTATION을 수행하고, x의 extra-black을 제거하고 종료한다.
+
+### DELETE-FIXUP 의사코드
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a1d714e8-dcdc-41b1-8701-c73054358375/Untitled.png)
+
+1 : 현재노드가 루트가 아니고, 현재노드의 색이 BLACK일 경우 반복한다.
+
+2 : 만약 현재노드가 부모노드의 왼쪽 자식이라면 (case 1,2,3,4)
+
+3 : 형제노드는 현재노드의 부모의 오른쪽자식이다.
+
+4 : 형제노드의 색이 RED인가?
+
+5~8 : 맞다면, (case 1) 형제노드의 색을 BLACK으로 변경한다. 현재노드의 부모노드의 색을 RED로 변경한다. 부모노드를 기준으로 LEFT-ROTATION을 수행한다. 새로운 형제노드(new w)는 부모노드의 오른쪽 자식이 된다.
+
+9 : (case 2,3,4) 형제노드의 왼쪽 자식과 오른쪽 자식이 모두 BLACK인가?
+
+10~11 : 맞다면, (case 2)형제노드의 색을 RED로 바꾸고, 현재노드는 현재노드의 부모노드로 갱신이 된다. 갱신된 현재노드가 RED 라면 빠져나올 것. (x의 extra-black과 형제노드의 black을 부모노드에게 전달. 부모노드가 red였다면 그대로 red를 빼고 black으로 변경하면 됨.)
+
+12 : w의 오른쪽 자식이 black인가? (둘다 흑색인 것은 case 2 에서 걸렀으므로, 오른쪽 자식이 black 이라는 것은 왼쪽 자식은 red라는 뜻)
+
+13~16 : 맞다면, (case 3) w의 왼쪽 자식을 BLACK으로 변경, w의 색을 RED로 변경하고 w를 기준으로 RIGHT-ROTATE를 수행한다. new w는 x의 부모의 오른쪽 자식으로(원래 w의 왼쪽 자식) 갱신한다.
+
+17~21 : 아니라면, (case 4) w의 색을 현재노드의 부모 색으로 변경한다. 현재노드의 부모색과 형제노드의 오른쪽 자식의 색을 BLACK으로 변경한다. 그리고, 부모노드를 기준으로 LEFT-ROTATE를 수행한다. x를 루트로 변경하는 이유는 반복문을 빠져나오기 위해서 변경한다.
+
+22 : 만약 현재노드가 부모노드의 오른쪽 자식이라면 (case 5,6,7,8)
+
+23 : 트리의 루트 색을 BLACK으로 변경한다.
