@@ -22,17 +22,12 @@ BST에서 search, insert, delete는 모두 시간복잡도가 트리의 높이�
 
 ### Left and Right Rotation
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec657442-d97c-46d9-9e75-28b06ecc8c6c/Untitled.png)
 
 INSERT와 DELETE가 공통적으로 필요한 두 가지 기본연산은 좌,우 회전이다. 해당 연산은 한 노드를 중심으로 부분적으로 노드의 모양을 수정하는 연산이다. 특정노드에 대해서 로테이션해도 BST의 특성을 유지한다. 이는 x노드와 y노드의 좌회전을 한 후의 서브트리를 살펴보면 유지한다는 것을 알 수 있다. 
 
 알파 서브트리는 x의 왼쪽 서브트리이고 변환 후, 여전히 x의 왼쪽 서브트리이다. 감마 서브트리는 y의 오른쪽 서브트리이고, 변환 후, 여전히 y의 오른쪽 서브트리이다. 베타 서브트리만 y의 왼쪽 서브트리였는데, 변환 후 x의 오른쪽 서브트리로 변경되었다. 원래 베타는 y보다는 작고 x 보다는 컸으며, 변환 후에도 y의 왼쪽서브트리, x의 오른쪽 서브트리이므로 BST를 유지하고 있다.
 
 ### Left Rotation 의사코드
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/73f216a7-99ba-4db1-9405-ecd242072f0b/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/96094ebe-8bb0-47de-bb96-f147972e4819/Untitled.png)
 
 **y→left ≠ T→nil 일때만 y→left→parent = x; 로 변경해야한다!**
 
@@ -60,8 +55,6 @@ INSERT와 DELETE가 공통적으로 필요한 두 가지 기본연산은 좌,우
 
 ### Insert
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b685fa31-9f25-4aa1-97eb-8fce4b74e2d3/Untitled.png)
-
 1, 2 : y는 nil, x는 root노드로 지정
 
 3 : x가 nil값이 될 때까지
@@ -86,7 +79,6 @@ INSERT와 DELETE가 공통적으로 필요한 두 가지 기본연산은 좌,우
 
 ### 16라인까지 진행했을 때 위반될 가능성이 있는 조건들
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/563a66f0-0a7e-4e7c-b8e9-d50a5c5da8aa/Untitled.png)
 
 1. 모든 노드는 red or black이므로 문제가 없다. OK
 2. 보통의 조건이라면 위반되지는 않지만, 만약 루트노드가 red 이더라도, 루트노드를 black으로 변경하면 된다. black을 red 로 변경하는 것은 위험하지만(red-red violation), red를 black으로 변경하는 것은 다소 자유롭다. 5번 룰 또한 루트노드(카운트 및 거쳐가는 노드가 없음)이기에 변경되지 않는다.
@@ -114,7 +106,6 @@ z 는 red노드
 
 크게 case는 6개로 나뉘어지게 되는데, case 1,2,3 은 z의 조상 노드(p[p[z]])의 왼쪽자식일 때이며, 4,5,6은 조상 노드의 오른쪽 자식일 경우이므로 대칭된다. 여기서는 case 1,2,3 만 다룬다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c1084b23-f370-4d3a-9f73-0019a56f3cb1/Untitled.png)
 
 줄여말하면, 나(z)와 내 부모(p[z])가 red이며 부모의 형제노드(삼촌노드)도 red인 상황이다. 이 상황에서는 조상 노드가 black 노드일 수 밖에 없다. 이 경우에는 부모와 삼촌노드의 색을 black으로 변경하고, 조상의 노드를 red로 변경한다. 
 
@@ -123,8 +114,6 @@ bh(x) ( x로부터 리프노드까지의 경로상의 블랙노드의 개수 ) �
 조상의 조상의 관계가 새로운 red-red인 경우에서 문제가 생길 수 있다. ( 새로운 문제를 해결하러 z가 두 칸 위로 올라간다 )
 
 ### case 2, 3 : z의 삼촌이 black
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fd57792e-de21-4dd5-8a8b-4ba2f59915bd/Untitled.png)
 
 y노드 (삼촌노드)를 저렇게 표현한 이유는 색이 black이기 때문에 NIL노드일 수 있어서 애매하게 표현해놓은 것이다.
 
@@ -152,7 +141,6 @@ red-red 문제는 완전히 해결되었으며, bh(x) 문제도 없다.
 
 ### INSERT red(p[z]) - red(p[p[z]]) 해결 의사코드
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/22c7a614-3957-4cc8-b26a-093624a49996/Untitled.png)
 
 여기서 y는 z의 삼촌노드이다.
 
@@ -175,8 +163,6 @@ red-red 문제는 완전히 해결되었으며, bh(x) 문제도 없다.
 16 : 트리의 루트가 red인 상황을 대비해서, 루트의 색을 black으로 변경한다. (루트는 어짜피 black이므로 한 번더 수행한다고 문제될 것은 없다.) 
 
 ### Delete
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f6f7d5e7-9a32-4b55-bfbd-9ae3f045228a/Untitled.png)
 
 원래 함수로는 삭제될 노드(z)가 주어지지 않고, 키값이 주어질 것이다. find를 통해 노드를 찾으면 됨.
 
@@ -227,11 +213,8 @@ red-red 문제는 완전히 해결되었으며, bh(x) 문제도 없다.
     2) 노드 x는 ‘double black’ 혹은 ‘red & black’ → red&black 이면 해당 노드의 red를 뻇고 종료
     
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2b9e485e-bfbe-4c7d-8eb7-c0e0d861fc87/Untitled.png)
-
 최악의 경우 x 가 루트까지 올라가서 extra black을 제거하는 경우이다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/03a8e685-da98-4d31-b886-33743a585a5b/Untitled.png)
 
 case 1,2,3,4 는 모두 x가 p[x]의 왼쪽자식일 때이다. 
 
@@ -261,7 +244,6 @@ x의 extra-black과 형제노드의 BLACK을 뺏고, 형제노드를 RED로 바�
 
 ### DELETE-FIXUP 의사코드
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a1d714e8-dcdc-41b1-8701-c73054358375/Untitled.png)
 
 1 : 현재노드가 루트가 아니고, 현재노드의 색이 BLACK일 경우 반복한다.
 
