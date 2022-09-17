@@ -1,7 +1,6 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/12927
 
 def solution(n, works):
-    answer = 0;ans = 0
     if sum(works) <= n:
         return 0
     len_works = len(works)
