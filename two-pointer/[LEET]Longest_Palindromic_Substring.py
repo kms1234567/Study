@@ -1,4 +1,4 @@
-# https://leetcode.com/problems/longest-palindromic-substring/submissions/
+# https://leetcode.com/problems/longest-palindromic-substring/
 
 class Solution(object):
     def longestPalindrome(self, s):
@@ -22,3 +22,10 @@ class Solution(object):
                     answer = s[i-j:i+j+2]
                 j += 1
         return answer
+                
+        
+        """
+        :type s: str
+        :rtype: str
+        """
+        

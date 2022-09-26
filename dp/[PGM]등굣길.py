@@ -5,8 +5,6 @@
 # 3. 만약 행과 열이 가장 윗칸 혹은 왼쪽이라면 거기서부터 시작해서 오른쪽 혹은 아래쪽 까지는 이용을 못하게 되므로 0으로 만든다.
 
 def solution(m, n, puddles):
-    answer = 0
-    
     dp = [[1 for _ in range(m)] for _ in range(n)]
     
     for y, x in puddles:
