@@ -14,3 +14,15 @@ def solution(scoville, K):
     if scoville[0] < K:
         return -1
     return answer
+
+from heapq import heapify, heappush, heappop
+def solution(scoville, K):
+    answer = 0
+    heapify(scoville)
+
+    while len(scoville) >= 2 and scoville[0] < K:
+        val = heappop(scoville) +(heappop(scoville) * 2)
+        heappush(scoville, val)
+        answer += 1
+    
+    return answer if scoville[0] >= K else -1

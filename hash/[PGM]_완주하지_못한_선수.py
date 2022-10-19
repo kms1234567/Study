@@ -13,3 +13,16 @@ def solution(participant, completion):
     for key in dicts.keys():
         if dicts[key]:
             return key
+
+# 2022.10.19
+
+# Counter를 이용하여 무조건 하나가 더 많은 participant를 기준으로 많은 값의 key를 반환하도록 했다.
+
+from collections import Counter
+def solution(participant, completion):
+    counter_participant = Counter(participant)
+    counter_completion = Counter(completion)
+    
+    for key in counter_participant.keys():
+        if counter_participant[key] > counter_completion[key]:
+            return key
