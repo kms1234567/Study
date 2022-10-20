@@ -19,3 +19,19 @@ def solution(progresses, speeds):
             progresses[idx] = data[0] + data[1]
     
     return answer
+
+import math
+def solution(progresses, speeds):
+    answer = []
+    
+    target, cnt = math.ceil((100-progresses[0])/speeds[0]), 0
+    for p, s in zip(progresses, speeds):
+        if math.ceil((100-p)/s) <= target:
+            cnt += 1
+        else:
+            answer.append(cnt)
+            cnt = 1
+            target = math.ceil((100-p)/s)
+            
+    answer.append(cnt)    
+    return answer

@@ -19,3 +19,19 @@ def solution(genres, plays):
                 break
 
     return answer
+
+# 22.10.20
+from collections import defaultdict
+def solution(genres, plays):
+    answer = []
+    
+    dicts = defaultdict(list)
+    for g, p, i in zip(genres, plays, range(len(plays))):
+        dicts[g].append((p, i))
+
+
+    for key in sorted(dicts.keys(), key = lambda x : -sum(map(lambda y:y[0], dicts[x]))):
+        tmp = [idx for _, idx in sorted(dicts[key], key = lambda x:-x[0])][:2]
+        answer += tmp
+            
+    return answer

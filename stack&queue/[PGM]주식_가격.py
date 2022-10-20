@@ -17,3 +17,17 @@ def solution(prices):
         answer[last_idx-data[1]] = data[1]
         
     return answer
+
+# 22.10.20
+def solution(prices):
+    answer = [0 for i in range(len(prices))]
+    stk = []
+    for i in range(len(prices)):
+        while stk and prices[stk[-1]] > prices[i]:
+            idx = stk.pop()
+            answer[idx] = i - idx
+        stk.append(i)
+    while stk:
+        idx = stk.pop()
+        answer[idx] = i - idx
+    return answer

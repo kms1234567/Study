@@ -14,3 +14,14 @@ def solution(clothes):
     for i in dicts.values():
         answer *= (i+1)
     return answer - 1
+
+# 22.10.20
+from collections import defaultdict
+def solution(clothes):
+    answer = 1
+    clothes_dict = defaultdict(int)
+    for _, kind in clothes:
+        clothes_dict[kind] += 1
+    for key in clothes_dict.keys():
+        answer *= (clothes_dict[key]+1)
+    return answer - 1

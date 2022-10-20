@@ -23,3 +23,25 @@ def solution(bridge_length, weight, truck_wait):
             truck_road.append((truck, cnt+bridge_length))
             
     return truck_road[-1][1]
+
+# 22.10.20
+from collections import deque
+def solution(bridge_length, weight, truck_weights):
+    answer, sum_curr = 0, 0
+    
+    truck_curr = deque()    
+    truck_weights = deque(truck_weights)
+    
+    while truck_weights or truck_curr:
+        answer += 1
+        
+        if truck_curr and (answer - truck_curr[0][0]) >= bridge_length:
+            pop_truck = truck_curr.popleft()
+            sum_curr -= (pop_truck[1])
+            
+        if truck_weights and sum_curr + truck_weights[0] <= weight:
+            pop_truck = truck_weights.popleft()
+            sum_curr += pop_truck
+            truck_curr.append([answer, pop_truck])
+        
+    return answer

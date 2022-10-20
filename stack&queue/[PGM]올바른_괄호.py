@@ -17,3 +17,18 @@ def solution(s):
         return False
     
     return True
+
+def solution(s):
+    stk = []
+    s = list(s)
+    while s:
+        bracket = s.pop()
+        if bracket == ')':
+            stk.append(bracket)
+        else:
+            if stk and stk[-1] == ')':
+                stk.pop()
+            else:
+                return False
+        
+    return True if not stk else False

@@ -37,3 +37,21 @@ def solution(priorities, location):
             idx_priorities.append([p, i])
         
     return answer
+
+# 22.10.20
+from collections import deque
+def solution(priorities, location):
+    answer = 0
+
+    sort_pri = sorted(priorities)
+    priorities = deque([[p, i] for p, i in zip(priorities, range(len(priorities)))])
+    
+    while priorities:
+        p, i = priorities.popleft()
+        if p == sort_pri[-1]:
+            sort_pri.pop()
+            answer += 1
+            if i == location:
+                return answer
+        else:
+            priorities.append([p, i])   
