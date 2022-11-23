@@ -30,3 +30,4 @@ def solution(id_list, report, k):
         result.append(ans[id_val])
         
     return result
+    
